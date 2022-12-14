@@ -4,10 +4,34 @@ export const apiSlice = createApi({
    reducerPath: 'api',
    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3500' }),
    endpoints: builder => ({
-      getTodo: builder.query({ query: ()=> '/todos' })
+      getTodo: builder.query({ query: ()=> '/todos' }),
+      addTodo: builder.mutation({
+         query: todo => ({
+            url: '/todos',
+            method: 'POST',
+            body: todo
+         })
+      })
+   }),
+   updateTodo: builder.mutation({
+      query: todo => ({
+         url: `/todos/${todo.id}`,
+         method: 'PATCH',
+         body: todo
+      })
+   }),
+   deleteTodo: builder.mutation({
+      query: ({ id }) => ({
+         url: `/todos/${id}`,
+         method: 'DELETE',
+         body: id
+      })
    })
 });
 
 export const {
-   useGetTodoQuery
+   useGetTodoQuery,
+   useAddTodoMutation,
+   useUpdateTodoMutation,
+   useDeleteTodoMutation
 } = apiSlice;
