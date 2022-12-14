@@ -1,13 +1,8 @@
 import React from 'react'
+import TodoList from './features/todo/TodoList'
 
 function App() {
-  return (
-    <div>
-      <h1 className="text-2xl font-bold">
-        Hello world!
-      </h1>
-    </div>
-  )
+  return <TodoList />
 }
 
 export default App
