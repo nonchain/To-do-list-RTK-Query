@@ -1,15 +1,22 @@
-import { useGetTodoQuery } from "../api/apiSlice"
+import {
+   useGetTodoQuery,
+   useAddTodoMutation,
+   useUpdateTodoMutation,
+   useDeleteTodoMutation
+} from "../api/apiSlice"
 import { useState } from "react"
 
 const TodoList = () => {
    const [newTodo, setNewTodo] = useState('');
-   const {
-      data: todos,
-      isLoading, isError, isSuccess, error
-   } = useGetTodoQuery();
+
+   const { data: todos, isLoading, isError, isSuccess, error } = useGetTodoQuery();
+   const [addTodo] = useAddTodoMutation();
+   const [updateTodo] = useUpdateTodoMutation();
+   const [deleteTodo] = useDeleteTodoMutation();
 
    const handleSubmit = (e) => {
       e.preventDefault();
+      addTodo({ userId: 1, title: newTodo, completed: false });
       setNewTodo('')
    }
 
@@ -35,11 +42,28 @@ const TodoList = () => {
 
    let content;
    if (isLoading) content = <p>Loading...</p>
-   if (isSuccess) content = JSON.stringify(todos);
+   if (isSuccess) content = todos.map(todo => {
+      return (
+         <article key={todo?.id} className="p-4 w-full bg-gray-100 flex items-center justify-between rounded-md">
+            <div className="flex gap-2">
+               <input
+                  type="checkbox"
+                  checked={todo?.completed}
+                  id={todo?.id}
+                  onChange={() => updateTodo({ ...todo, completed: !todo.completed })}
+               />
+               <label htmlFor={todo.id}>{todo.title}</label>
+            </div>
+            <button className="" onClick={() => deleteTodo({ id: todo.id })}>
+               <i className="ri-delete-bin-line"></i>
+            </button>
+         </article>
+      )
+   })
 
    return (
-      <main className="flex flex-col p-8 gap-8">
-         <h1 className="text-4xl text-slate-800 font-semibold">Todo List</h1>
+      <main className="mx-auto w-3/4 flex flex-col p-8 gap-8">
+         <h1 className="text-4xl text-slate-800 font-bold">Online Todo List</h1>
          {newItemSection}
          {content}
       </main>
