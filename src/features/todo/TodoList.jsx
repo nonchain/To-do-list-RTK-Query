@@ -10,6 +10,7 @@ const TodoList = () => {
    const [newTodo, setNewTodo] = useState('');
 
    const { data: todos, isLoading, isError, isSuccess, error } = useGetTodoQuery();
+   // Just call functions
    const [addTodo] = useAddTodoMutation();
    const [updateTodo] = useUpdateTodoMutation();
    const [deleteTodo] = useDeleteTodoMutation();
