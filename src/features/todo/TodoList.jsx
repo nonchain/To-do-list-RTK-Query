@@ -1,7 +1,12 @@
+import { useGetTodoQuery } from "../api/apiSlice"
 import { useState } from "react"
 
 const TodoList = () => {
-   const [newTodo, setNewTodo] = useState('')
+   const [newTodo, setNewTodo] = useState('');
+   const {
+      data: todos,
+      isLoading, isError, isSuccess, error
+   } = useGetTodoQuery();
 
    const handleSubmit = (e) => {
       e.preventDefault();
